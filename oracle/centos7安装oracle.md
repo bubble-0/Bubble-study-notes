@@ -1,7 +1,7 @@
 # centos7下安装oracle11g
 
 ## 1.依赖检查
-``` shell
+``` 
 -- 依赖检查
 rpm -q make binutils gcc libaio glibc compat-libstdc++-33 elfutils-libelf elfutils-libelf-devel glibc-common glibc-devel glibc-headers gcc-c++ libaio-devel libgcc libstdc++ libstdc++-devel sysstat unixODBC unixODBC-devel ksh
 
@@ -17,7 +17,7 @@ rpm -ivh xxx
 ```
 
 ## 2.创建Oracle用户和相应的属组
-```
+``` 
 groupadd oinstall
 groupadd dba
 useradd -g oinstall -G dba oracle
