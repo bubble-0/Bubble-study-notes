@@ -151,14 +151,14 @@ source /home/oracle/.bash_profile
 exit
 ```
 
-## 修改系统版本设置
+## 10.修改系统版本设置
 ``` 
 vi /database/stage/cvu/cv/admin/cvu_config
 
 CV_ASSUME_DISTID=OEL7
 ```
 
-## 复制安装参数文件（包含3个，分别是数据库安装，监听安装，实例安装）
+## 11.复制安装参数文件（包含3个，分别是数据库安装，监听安装，实例安装）
 ```
 cp -R /u01/app/oracle/tmp/database/response/ /home/oracle/
 
@@ -179,7 +179,7 @@ DECLINE_SECURITY_UPDATES=true
 
 ```
 
-## 开始安装数据库软件
+## 12.开始安装数据库软件
 ```
 su oracle
 cd /u01/app/oracle/tmp/database/
@@ -196,7 +196,7 @@ tail -f xxx
 
 ```
 
-## 安装监听
+## 13.安装监听
 ```
 netca /silent /responseFile /home/oracle/response/netca.rsp
 
@@ -204,7 +204,7 @@ netca /silent /responseFile /home/oracle/response/netca.rsp
 netstat -tnulp | grep 1521
 ```
 
-## 配置安装实例文件,安装实例
+## 14.配置安装实例文件,安装实例
 ```
 vi /home/oracle/response/dbca.rsp
 
@@ -223,7 +223,7 @@ TOTALMEMORY= "6553"
 dbca -silent -responseFile /home/oracle/response/dbca.rsp
 ```
 
-## 开机自启动
+## 15.开机自启动
 ```
 -- 使用oracle用户即可
 vi  /etc/oratab
@@ -240,7 +240,7 @@ su oracle -lc "/u01/app/oracle/product/11.2.0/bin/dbstart /u01/app/oracle/produc
 
 ```
 
-## 检查,启动数据库
+## 16.检查,启动数据库
 ```
 -- 查看实例状态
 lsnrctl status
