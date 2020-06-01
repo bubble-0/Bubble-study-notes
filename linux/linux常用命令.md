@@ -154,6 +154,9 @@ export CLASSPATH
 - ** date -s  完整日期时间（YYYY-MM-DD hh:mm[:ss]）：修改日期、时间
 - ** hwclock -w 将时间写入bios避免重启失效。当我们进行完 Linux 时间的校时后，还需要以 hwclock 来更新 BIOS 的时间，因为每次重新启动的时候，系统会重新由 BIOS 将时间读出来，所以， BIOS 才是重要的时间依据吶。
 
+## 修改主机名
+- ** hostnamectl set-hostname xxx
+
 ## 查看防火墙状态
 - ** systemctl status firewalld
 ## 关闭防火墙
