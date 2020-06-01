@@ -8,7 +8,7 @@
 
 ## 实例
 ### 创建一个接口IDefaultHello
-```
+``` java
 package com.demo.bubble.NewCharacter.defaultdemo;
 
 public interface IDefaultHello {
@@ -26,7 +26,7 @@ public interface IDefaultHello {
 
 ```
 ### 创建实现类DefaultHelloImp,实现IDefaultHello接口并且调用接口中的方法
-```
+``` java
 package com.demo.bubble.NewCharacter.defaultdemo;
 
 public class DefaultHelloImp implements IDefaultHello{
@@ -52,7 +52,7 @@ public class DefaultHelloImp implements IDefaultHello{
 }
 ```
 ### 创建一个接口IDefaultHello2,DefaultHelloImp类实现IDefaultHello2接口
-```
+``` java
 package com.demo.bubble.NewCharacter.defaultdemo;
 
 public interface IDefaultHello2 {
