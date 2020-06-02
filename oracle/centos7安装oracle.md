@@ -240,7 +240,7 @@ su oracle -lc "/u01/app/oracle/product/11.2.0/bin/dbstart /u01/app/oracle/produc
 
 ```
 
-## 16.检查,启动数据库
+## 16检查,启动数据库
 ```
 -- 查看实例状态
 lsnrctl status
