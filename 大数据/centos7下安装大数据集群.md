@@ -51,7 +51,7 @@
 -  rpm -ivh autogen-libopts-5.18-5.el7.x86_64.rpm
 -  rpm -ivh ntp-4.2.6p5-28.el7.centos.x86_64.rpm  
 -  rpm -ivh ntpdate-4.2.6p5-28.el7.centos.x86_64.rpm  
--  rpm -ivh perl*
+-  rpm -ivh  perl-5.16.3-293.el7.x86_64.rpm perl-libs-5.16.3-293.el7.x86_64.rpm perl-Module-Pluggable-4.8-3.el7.noarch.rpm perl-Pod-Escapes-1.04-293.el7.noarch.rpm perl-Pod-Simple-3.28-4.el7.noarch.rpm perl-version-0.99.07-3.el7.x86_64.rpm --force --nodeps
 -  rpm -ivh net-tools-2.0-0.24.20131004git.el7.x86_64.rpm
 -  rpm -ivh libtirpc-0.2.4-0.15.el7.x86_64.rpm
 -  rpm -ivh rpcbind-0.2.0-47.el7.x86_64.rpm 
