@@ -317,7 +317,251 @@ interface MessageBuild {
     }
 }
 
-
-
 ```
 
+### 2.Consumer接口
+``` java
+/**
+ * java.util.function.Consumer<T> 接口则正好与Supplier接口相反，
+ * 它不是生产一个数据，而是消费一个数据，其数据类型由泛型决定
+ * <p>
+ * 提供了一个默认方法andThen
+ * 如果一个方法的参数和返回值全都是 Consumer 类型，
+ * 那么就可以实现效果：消费数据的时候，首先做一个操作，然后再做一个操作，实现组合
+ * <p>
+ * default Consumer<T> andThen(Consumer<? super T> after) {
+ * Objects.requireNonNull(after);
+ * return (T t) ‐> { accept(t); after.accept(t); };
+ * //1:  返回值为Consumer 那么需要 ()-> 表示函数式接口
+ * //2:  accept(t);为生产一个数据供应给 (T t)中的t
+ * //3:  after.accept(t);为利用这个t再次生成新的函数式接口 实现类始于builder的设计模式
+ * }
+ * <p>
+ * 执行顺序，先用lambda实现逻辑之后，执行accept函数执行lambda方法，即重写的accept方法
+ */
+public class ConsumerExample {
+    public static void generateX(Consumer<String> consumer) {
+        consumer.accept("hello consumer");
+        consumer.accept("secon consumer");
+        consumer.accept("hi consumer");
+    }
+
+    public static void formatPersonMsg(Consumer<String[]> con1, Consumer<String[]> con2) {
+        //组合作用。使用andThen方法，con1.andThen(con2).accept();会使两者都消费
+        con1.andThen(con2).accept(new String[]{"迪丽热巴,女", "古力娜扎,女", "马尔扎哈,男"});
+    }
+
+    public static void main(String[] args) {
+        generateX(s -> System.out.println(s));
+
+        formatPersonMsg(s1 -> {
+            for (String s : s1) {
+                System.out.print(s.split("\\,")[0] + " ");
+            }
+            System.out.println();
+        }, s2 -> {
+            for (String s : s2) {
+                System.out.print(s.split("\\,")[1] + " ");
+            }
+        });
+
+        System.out.println();
+
+        printInfo(r -> System.out.println(r.split("\\,")[0]),
+                r -> System.out.println(r.split("\\,")[1]), new String[]{"小明,12", "小红,15", "小让,128"});
+
+    }
+
+    //自产自销
+    private static void printInfo(Consumer<String> con1, Consumer<String> con2, String[] arr) {
+        for (String s : arr) {
+            con1.andThen(con2).accept(s);
+        }
+    }
+}
+```
+
+### 3.PredicateExample接口
+``` java
+public class PredicateExample {
+    private static void method_test(Predicate<String> predicate) {
+        boolean b = predicate.test("ABC DEF");
+        System.out.println(b);
+    }
+
+    private static void method_or(Predicate<String> predicate,Predicate<String> predicate2) {
+        boolean b = predicate.or(predicate2).test("ABC DEF");
+        System.out.println(b);
+    }
+
+    private static void method_and(Predicate<String> predicate,Predicate<String> predicate2) {
+        boolean b = predicate.and(predicate2).test("ABC DEF");
+        System.out.println(b);
+    }
+
+    private static void method_negate(Predicate<String> predicate) {
+        boolean b = predicate.negate().test("ABC DEF");
+        System.out.println(b);
+    }
+
+
+
+    public static void main(String[] args) {
+        /**
+         * 有时候我们需要对某种类型的数据进行判断，从而得到一个boolean值结果。
+         * 这时可以使用java.util.function.Predicate<T> 接口
+         *
+         *  (s)->  函数式接口有参数 表示有有产生数据
+         *
+         *  (s)-> 具体的返回数据 看要是否原函数式接口给出了
+         *
+         * 抽象方法：test
+         *
+         * Predicate 接口中包含一个抽象方法： boolean test(T t) 。用于条件判断的场景：
+         *
+         * 默认方法：and or nagte (取反)
+         *
+         * 既然是条件判断，就会存在与、或、非三种常见的逻辑关系。其中将两个 Predicate 条件使用“与”逻辑连接起来实
+         *
+         * 现“并且”的效果时,类始于 Consumer接口 andThen()函数 其他三个雷同
+         */
+
+        method_test(i->i.contains("A"));
+
+        method_or(i->i.contains("C"),i->i.contains("Z"));
+
+        method_or(i->i.contains("X"),i->i.contains("Z"));
+
+        method_and(i->i.contains("A"),i->i.contains("B"));
+
+        method_and(i->i.contains("A"),i->i.contains("Z"));
+
+        method_negate(i->i.contains("A"));
+        method_negate(i->i.contains("Z"));
+
+        //静态方法 isEqual 判断是否为同一个对象
+        Predicate<String> predicate1 = i-> i.contains("A");
+        Predicate<String> predicate3 = i-> i.contains("B");
+
+
+
+        boolean b = Predicate.isEqual(predicate1).test(predicate1);
+        System.out.println(b);
+
+        System.out.println(Predicate.isEqual(predicate1).test(predicate3));
+
+
+    }
+}
+```
+
+### 4.Function 接口
+``` java
+public class FuncationExample {
+    public static String method_apply(Function<Integer, String> function) {
+        return function.apply(11);
+    }
+
+    //andThen 先计算前面的funcaion,在计算后面的
+    private static Integer method_andThen(Function<Integer, Integer> function, Function<Integer, Integer> function2) {
+        return function.andThen(function2).apply(11);
+    }
+
+    //compose 先计算后面的,在计算前面的
+    private static Integer method_ccompose(Function<Integer, Integer> function, Function<Integer, Integer> function2) {
+        return function.compose(function2).apply(11);
+    }
+
+    public static void main(String[] args) {
+        /**
+         * java.util.function.Function<T,R> 接口用来根据一个类型的数据得到另一个类型的数据，
+         * 前者称为前置条件，后者称为后置条件 T是参数R是返回值
+         */
+
+        //直接使用
+        System.out.println(method_apply(i -> i.toString()));
+
+        /**
+         * 默认方法 andThen  compose():
+         * Function 接口中有一个默认的 andThen  compose方法，用来进行组合操作。
+         * JDK源代码如：
+         *  default <V> Function<T, V> andThen(Function<? super R, ? extends V> after) {
+         *      Objects.requireNonNull(after);
+         *      return (T t) -> after.apply(apply(t));// 先执行调用者,再执行after的apply犯法
+         *  }  // 这里的V 一个是作为输入值 一个是作为输出值  按照调用的顺序的不同 对于 T V 做输入 输出的顺序也不同 注意看
+         *
+         *  default <V> Function<V, R> compose(Function<? super V, ? extends T> before) {
+         *      Objects.requireNonNull(before);
+         *      return (V v) -> apply(before.apply(v));// 后执行before的apply方法,后执行调用者apply方法
+         *  }
+         */
+
+        //使用组合
+        System.out.println(method_andThen(
+                i -> i * 2,
+                i -> i + 2
+        )); //先*2 在+2  结果是24
+
+
+        System.out.println(method_ccompose(
+                i -> i * 2,
+                i -> i + 2
+        )); //先+2 在*2  结果是26
+
+        //返回输入参数的函数对象
+        Object apply = Function.identity().apply(2);
+        System.out.println(apply);
+        
+    }
+}
+```
+
+## 3.方法引用
+### 方法引用使得开发者可以将已经存在的方法作为变量来传递使用。方法引用可以和Lambda表达式配合使用。
+``` java
+public class MethodReferenceDemo {
+
+    public static void main(String[] args) {
+
+        //创建一个List , 将集合的元素翻转输出
+        List<String> list = Arrays.asList("123","456","789");
+
+        //1.通过普通lambda表达式实现
+        List<String> list1 = DemoUtils.convert(list, i ->  new StringBuilder(i).reverse().toString());
+        System.out.println(list1);
+
+        //2.静态方法直接引用
+        List<Integer> list2 = DemoUtils.convert(list, Integer::valueOf);
+        System.out.println(list2);
+
+        //3.非静态方法引用
+        List<Integer> list3 = DemoUtils.convert(list, String::length);
+        System.out.println(list3);
+
+        //4.指定示例的方法引用
+        Integer num = 2000;
+
+        List<Integer> lists = Arrays.asList(1000,2000,3000);
+
+        //lambda 方式
+        List<Integer> results = DemoUtils.convert(lists, item->num.compareTo(item));
+        System.out.println(results);
+
+        //成员变量引用
+        List<Integer> results2 = DemoUtils.convert(lists, num::compareTo);
+        System.out.println(results2);
+
+        //构造函数引用
+        List<String> results3 = DemoUtils.convert(list, item -> LocalDate.now().toString());
+
+        List<Date> results4 = DemoUtils.convert(lists, Date::new);
+        //两种遍历方式
+        results4.forEach(item->
+            System.out.println(item.toString())
+        );
+
+        results4.forEach(System.out::println);
+    }
+}
+
+```
