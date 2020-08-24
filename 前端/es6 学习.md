@@ -10,7 +10,7 @@
 
 a // ReferenceError: a is not defined.
 b // 1
-```
+``` 
 只在代码块生效
 * 不存在变量提升的情况
 ```

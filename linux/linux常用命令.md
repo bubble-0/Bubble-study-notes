@@ -210,7 +210,7 @@ chkconfig iptables off
 - ** 在命令后面安装 --force --nodeps  
 
 ## RPM
-- ** rpm -e 卸载
+- ** rpm -e 卸载    -e --allmatches --nodeps 强制卸载
 - ** rpm -qa 列出所有安装过的包
 - **  --force --nodeps  忽略报错强制安装
 

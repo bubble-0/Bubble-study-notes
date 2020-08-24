@@ -106,6 +106,11 @@ grant connect,resource to username;
 grant dba to username
 ```
 
+### 给予用户使用表空间的权限
+```
+alter user 用户名 quota unlimited on 表空间;
+```
+
 ### 找回误删除的表
 - 查看回收站中表
 ```
