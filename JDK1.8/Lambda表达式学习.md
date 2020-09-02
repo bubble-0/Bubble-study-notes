@@ -381,7 +381,7 @@ public class ConsumerExample {
 }
 ```
 
-### 3.PredicateExample接口
+### 3.Predicate接口
 ``` java
 public class PredicateExample {
     private static void method_test(Predicate<String> predicate) {
