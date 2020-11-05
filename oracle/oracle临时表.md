@@ -18,3 +18,10 @@ Create Global Temporary Table Table_Name
 Create Global Temporary Table Table_Name  
 (Col1 Type1,Col2 Type2...) On Commit Delete Rows ;
 ```
+
+### 两中类型临时表的区别
+会话级临时表采用 on commit preserve rows ;而事务级则采用 on commit delete rows ;用法上，会话级别只有当会话结束临时表中的数据才会被截断，而且事务级临时表则不管是 commit 、 rollback 或者是会话结束，临时表中的数据都将被截断
+
+## 什么时候使用临时表
+- 当某一个 SQL 语句关联的表在 2 张及以上，并且和一些小表关联。可以采用将大表进行分拆并且得到比较小的结果集合存放在临时表中
+- 程序执行过程中可能需要存放一些临时的数据，这些数据在整个程序的会话过程中都需要用的等等。
